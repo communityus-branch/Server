@@ -1,19 +1,25 @@
 package gg.rsmod.plugins.service.worldlist
 
+import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import gg.rsmod.game.Server
 import gg.rsmod.game.model.World
-import gg.rsmod.game.plugin.Plugin
 import gg.rsmod.game.service.Service
+import gg.rsmod.plugins.api.ext.enumSetOf
 import gg.rsmod.plugins.service.worldlist.io.WorldListChannelHandler
 import gg.rsmod.plugins.service.worldlist.io.WorldListChannelInitializer
 import gg.rsmod.plugins.service.worldlist.model.WorldEntry
+import gg.rsmod.plugins.service.worldlist.model.WorldLocation
+import gg.rsmod.plugins.service.worldlist.model.WorldType
 import gg.rsmod.util.ServerProperties
 import io.netty.channel.ChannelFuture
 import mu.KLogging
+import java.io.BufferedWriter
+import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.nio.file.StandardOpenOption
 
 /**
  * @author Triston Plummer ("Dread")
@@ -37,7 +43,7 @@ class WorldListService : Service {
     /**
      * The current app's [WorldEntry].
      */
-    @Volatile private lateinit var worldEntry : WorldEntry
+    @Volatile lateinit var worldEntry : List<WorldEntry>
 
     /**
      * The [ChannelFuture] for the network service
@@ -58,20 +64,30 @@ class WorldListService : Service {
 
         // If the world configuration file doesn't exist, spit out a warning and do nothing
         if (!Files.exists(path)) {
-            logger.warn("World list configuration file does not exist: $path")
-            return
+            logger.warn("World list configuration file does not exist: $path : Creating example file")
+            Files.createFile(path)
+            worldEntry = listOf(WorldEntry(1, enumSetOf(WorldType.MEMBERS), "127.0.0.1", "-", WorldLocation.UNITED_STATES, 0), WorldEntry(2, enumSetOf(WorldType.MEMBERS), "127.0.0.1", "-", WorldLocation.UNITED_STATES, 0))
+            saveWorldData()
         }
 
-        parse()
+        loadWorldData()
     }
 
     /**
      * Parses the world list
      */
-    private fun parse() {
+    private fun loadWorldData() {
+        var jsonString: String = ""
         Files.newBufferedReader(path).use { reader ->
-            worldEntry = Gson().fromJson<WorldEntry>(reader, WorldEntry::class.java)
+            jsonString = reader.readText()
         }
+        worldEntry = ArrayList(Gson().fromJson<Array<WorldEntry>>(jsonString, Array<WorldEntry>::class.java).toMutableList())
+    }
+
+    private fun saveWorldData() {
+        val writer: BufferedWriter = Files.newBufferedWriter(path,StandardCharsets.UTF_8,StandardOpenOption.WRITE)
+        writer.use { it.write(Gson().toJson(worldEntry)) }
+        writer.close()
     }
 
     /**
@@ -83,7 +99,7 @@ class WorldListService : Service {
     override fun bindNet(server: Server, world: World) {
 
         // The inbound channel handler for the world list protocol
-        val handler = WorldListChannelHandler(listOf(worldEntry))
+        val handler = WorldListChannelHandler(worldEntry)
 
         // Bind the world list network pipeline
         val bootstrap = server.bootstrap.clone()
@@ -100,8 +116,8 @@ class WorldListService : Service {
      */
     override fun postLoad(server: Server, world: World) {
         val plugins = world.plugins
-        plugins.bindLogin(incrementPlayerCount)
-        plugins.bindLogout(decrementPlayerCount)
+        plugins.bindLogin{ incrementPlayerCount(world.gameContext.worldId) }
+        plugins.bindLogout { decrementPlayerCount(world.gameContext.worldId) }
     }
 
     /**
@@ -117,15 +133,15 @@ class WorldListService : Service {
     /**
      * Increments the player count for every entry in the world list
      */
-    private val incrementPlayerCount : Plugin.() -> Unit = {
-        worldEntry.players++
+    private fun incrementPlayerCount(worldId: Int) {
+        worldEntry.get(worldId-1).players++
     }
 
     /**
      * Decrements the player count for every entry in the world list
      */
-    private val decrementPlayerCount : Plugin.() -> Unit = {
-        worldEntry.players--
+    private fun decrementPlayerCount(worldId: Int) {
+        worldEntry.get(worldId-1).players--
     }
 
     companion object : KLogging()

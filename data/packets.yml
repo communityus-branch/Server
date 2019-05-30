@@ -1532,3 +1532,14 @@ in-packets:
     opcode: 99
     length: 7
     ignore: true
+
+  - message: gg.rsmod.game.message.impl.WorldSwitchMessage
+    type: VARIABLE_SHORT
+    opcode: 47
+    structure:
+      - name: address
+        type: BYTES
+      - name: id
+        type: INT
+      - name: mask
+        type: INT

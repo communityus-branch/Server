@@ -28,7 +28,7 @@ class ClientChannelInitializer(private val revision: Int, private val rsaExponen
      * The [io.netty.channel.ChannelHandler.Sharable] channel inbound adapter that
      * handles the messages sent and received from [SocketChannel]s.
      */
-    private val handler = GameHandler(filestore, world)
+    val handler = GameHandler(filestore, world)
 
     override fun initChannel(ch: SocketChannel) {
         val p = ch.pipeline()
