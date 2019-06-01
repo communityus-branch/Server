@@ -1,0 +1,9 @@
+[
+  {"id":1,"types":["MEMBERS"],"address":"127.0.0.1","activity":"Trade / Merchanting","location":"UNITED_STATES","players":0},
+  {"id":2,"types":["MEMBERS"],"address":"127.0.0.1","activity":"General Play","location":"UNITED_STATES","players":0},
+  {"id":3,"types":["MEMBERS"],"address":"127.0.0.1","activity":"General Play","location":"UNITED_STATES","players":0},
+  {"id":4,"types":["MEMBERS"],"address":"127.0.0.1","activity":"VIP Only","location":"UNITED_STATES","players":0},
+  {"id":5,"types":["MEMBERS"],"address":"127.0.0.1","activity":"","location":"UNITED_STATES","players":0},
+  {"id":6,"types":["MEMBERS"],"address":"127.0.0.1","activity":"-","location":"UNITED_STATES","players":0},
+  {"id":7,"types":["MEMBERS"],"address":"127.0.0.0","activity":"-","location":"UNITED_STATES","players":0}
+]
