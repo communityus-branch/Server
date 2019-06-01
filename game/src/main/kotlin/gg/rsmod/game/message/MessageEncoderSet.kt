@@ -60,6 +60,7 @@ class MessageEncoderSet {
         put(OnDialogAbortEncoder(), TriggerOnDialogAbortMessage::class.java)
         put(UpdateRebootTimerEncoder(), UpdateRebootTimerMessage::class.java)
         put(WorldSwitchEncoder(), WorldSwitchMessage::class.java)
+        put(GrandExchangeOfferEncoder(), GrandExchangeOfferMessage::class.java)
     }
 
     private fun <T : Message> put(encoder: MessageEncoder<T>, message: Class<out T>) {

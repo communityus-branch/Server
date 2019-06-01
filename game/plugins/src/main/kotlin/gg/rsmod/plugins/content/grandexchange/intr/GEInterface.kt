@@ -3,6 +3,9 @@ package gg.rsmod.plugins.content.grandexchange.intr
 import gg.rsmod.game.model.entity.Player
 import gg.rsmod.plugins.api.InterfaceDestination
 import gg.rsmod.plugins.api.ext.*
+import gg.rsmod.plugins.content.grandexchange.GrandExchange
+import gg.rsmod.plugins.content.grandexchange.GrandExchangeOffer
+import gg.rsmod.plugins.content.grandexchange.impl.sendGrandExchangeOffer
 
 object GEInterface {
     fun openGrandExchange(player: Player) {
@@ -52,5 +55,23 @@ object GEInterface {
         player.setComponentText(465,26,"")
         player.setComponentText(465,16,"")
         player.setComponentText(465,17,"")
+
+        for(offer: GrandExchangeOffer in GrandExchange.getPlayerOffers(player)) {
+            player.sendGrandExchangeOffer(offer)
+        }
+    }
+
+    fun setupMainScreenVarbits(player: Player) {
+        player.setVarbit(1043,0)
+        player.setVarbit(563,0)
+        player.setVarp(1151, -1)
+
+        player.runClientScript(828, 1)
+        player.runClientScript(2524, -1, -1)
+
+        player.setVarbit(4398, 0)
+        player.setVarbit(4396, 0)
+        player.setVarbit(4397, 0)
+        player.setVarbit(4439, 0)
     }
 }

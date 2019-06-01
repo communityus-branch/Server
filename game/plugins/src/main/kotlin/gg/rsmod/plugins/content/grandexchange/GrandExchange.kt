@@ -40,7 +40,16 @@ object GrandExchange {
         return price
     }
 
-    fun getPlayerOffers(player: Player) {
+    fun getPlayerOffers(player: Player): MutableList<GrandExchangeOffer> {
         val playerName = player.username
+        val playerOffers: MutableList<GrandExchangeOffer> = mutableListOf()
+
+        for(offer in GE_OFFERS) {
+            if(offer.getUsername() == playerName) {
+                playerOffers.add(offer)
+            }
+        }
+
+        return playerOffers
     }
 }

@@ -32,8 +32,8 @@ class GrandExchangeOffer(private val offerId: Long, private val id: Int, private
     private var _cancelled: Boolean = false
     private var _username: String = ""
     private var _slot: Int = -1
-    private var _totalPriceSoFar: Int = -1 // total gold received or spent so far
-    private var _totalAmountSoFar: Int = -1 // total items received or spent so far
+    private var _totalPriceSoFar: Int = 0 // total gold received or spent so far
+    private var _totalAmountSoFar: Int = 0 // total items received or spent so far
     private var _completed: Boolean = false
 
     fun getOfferId(): Long { return this._offerId }

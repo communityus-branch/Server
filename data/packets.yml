@@ -2,16 +2,26 @@
 # in-packets:  packets sent from client to server
 
 out-packets:
-  - message: gg.rsmod.game.message.impl.WorldSwitchMessage
-    type: VARIABLE_BYTE
-    opcode: 47
+  - message: gg.rsmod.game.message.impl.GrandExchangeOfferMessage
+    type: FIXED
+    length: 20
+    opcode: 55
     structure:
-      - name: address
-        type: BYTES
-      - name: id
+      - name: slot
+        sign: UNSIGNED
+        type: BYTE
+      - name: state
+        type: BYTE
+      - name: itemId
         sign: UNSIGNED
         type: SHORT
-      - name: mask
+      - name: price
+        type: INT
+      - name: totalQuanity
+        type: INT
+      - name: quanitySold
+        type: INT
+      - name: spent
         type: INT
 
   - message: gg.rsmod.game.message.impl.WorldSwitchMessage

@@ -15,20 +15,43 @@ intArrayOf(7,8,9,10,11,12,13,14).forEach { button ->
     }
 }
 
-fun test() {
+suspend fun search_item(it: QueueTask) {
+    val itemId= it.searchItemInput("What would you like to buy?")
+    if(itemId != 65535) {
 
+        val itemDef: ItemDef = world.definitions.get(ItemDef::class.java,itemId)
+
+        it.player.setVarp(1151, itemId)
+        it.player.setComponentText(465,25, itemDef.examine!!)
+
+        val price = GrandExchange.getCheapestSellPrice(itemId)
+
+        it.player.setComponentText(465,26,"$price")
+        it.player.setVarbit(4398,price)
+        it.player.setVarbit(4396,1)
+    } else {
+        it.player.setVarp(1151, -1)
+        it.player.setComponentText(465, 25, "")
+        it.player.setComponentText(465,26,"")
+        it.player.setVarbit(4398,0)
+        it.player.setVarbit(4396,0)
+    }
 }
 
-suspend fun search_item(it: QueueTask) {
-    val itemId: Int = it.searchItemInput("What would you like to buy?")
-    val itemDef: ItemDef = world.definitions.get(ItemDef::class.java,itemId)
+// Offer Status Back button
+on_button(465,4) {
+    player.closeInputDialog()
+    player.openInterface(467, InterfaceDestination.TAB_AREA)
+    GEInterface.setupMainScreenVarbits(player)
+}
 
-    it.player.setVarp(1151, itemId)
-    it.player.setComponentText(465,25, itemDef.examine!!)
+// Setup Offer Buttons
+on_button(465,24) {
+    val opt = player.getInteractingOption()
+    val slot = player.getInteractingSlot()
 
-    val price = GrandExchange.getCheapestSellPrice(itemId)
-
-    it.player.setComponentText(465,26,"$price")
-    it.player.setVarbit(4398,price)
-    it.player.setVarbit(4396,1)
+    // Item Select Button
+    if(slot == 0) {
+        player.queue(TaskPriority.WEAK) { search_item(this) }
+    }
 }

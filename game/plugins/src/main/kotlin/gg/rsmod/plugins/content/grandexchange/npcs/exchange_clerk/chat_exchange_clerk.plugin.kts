@@ -1,6 +1,6 @@
 package gg.rsmod.plugins.content.grandexchange.npcs.exchange_clerk
 
-import gg.rsmod.plugins.content.grandexchange.intr.openGrandExchange
+import gg.rsmod.plugins.content.grandexchange.impl.openGrandExchange
 
 /*
  * Author: Kyle Escobar
