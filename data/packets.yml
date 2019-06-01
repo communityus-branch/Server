@@ -14,6 +14,18 @@ out-packets:
       - name: mask
         type: INT
 
+  - message: gg.rsmod.game.message.impl.WorldSwitchMessage
+    type: VARIABLE_BYTE
+    opcode: 47
+    structure:
+      - name: address
+        type: BYTES
+      - name: id
+        sign: UNSIGNED
+        type: SHORT
+      - name: mask
+        type: INT
+
   - message: gg.rsmod.game.message.impl.UpdateRebootTimerMessage
     type: FIXED
     opcode: 72

@@ -65,7 +65,11 @@ object GroundItemPathAction {
             if (p.tile.sameAs(item.tile)) {
                 handleAction(p, item, opt)
             } else {
-                p.writeMessage(Entity.YOU_CANT_REACH_THAT)
+                if(item.isOnObject() && p.tile.getDistance(item.tile) == 1) {
+                    handleAction(p, item, opt)
+                } else {
+                    p.writeMessage(Entity.YOU_CANT_REACH_THAT)
+                }
             }
             break
         }

@@ -26,6 +26,6 @@ class LoginSystem(channel: Channel, private val world: World) : ServerSystem(cha
     }
 
     companion object {
-        private var loginService: LoginService? = null
+        var loginService: LoginService? = null
     }
 }

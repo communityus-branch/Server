@@ -21,8 +21,9 @@ import java.util.EnumMap
  */
 class GroundItem private constructor(val item: Int, var amount: Int, internal var ownerUID: PlayerUID?) : Entity() {
 
-    constructor(item: Int, amount: Int, tile: Tile, owner: Player? = null) : this(item, amount, owner?.uid) {
+    constructor(item: Int, amount: Int, tile: Tile, owner: Player? = null, onObject: Boolean = false) : this(item, amount, owner?.uid) {
         this.tile = tile
+        this.onObject = onObject
     }
 
     constructor(item: Item, tile: Tile, owner: Player? = null) : this(item.id, item.amount, tile, owner)
@@ -30,6 +31,8 @@ class GroundItem private constructor(val item: Int, var amount: Int, internal va
     internal var currentCycle = 0
 
     internal var respawnCycles = -1
+
+    internal var onObject: Boolean = false
 
     internal val attr = EnumMap<ItemAttribute, Int>(ItemAttribute::class.java)
 
@@ -48,6 +51,10 @@ class GroundItem private constructor(val item: Int, var amount: Int, internal va
     fun copyAttr(attributes: Map<ItemAttribute, Int>): GroundItem {
         attr.putAll(attributes)
         return this
+    }
+
+    fun isOnObject(): Boolean {
+        return this.onObject
     }
 
     fun isSpawned(world: World): Boolean = world.isSpawned(this)

@@ -11171,6 +11171,7 @@ object Objs {
     const val BANK_BOOTH_20326 = 20326
     const val BANK_BOOTH_20327 = 20327
     const val BANK_BOOTH_20328 = 20328
+    const val BANK_BOOT_27291 = 27291
     const val BANK_TABLE_20329 = 20329
     const val BANK_TABLE_20330 = 20330
     const val DAGGER_STALL = 20331

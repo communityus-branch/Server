@@ -3,6 +3,7 @@
 name: "RS Mod Server"
 game-port: 43594
 revision: 180
+worldId: 1
 
 # The coordinates for the home location.
 home-x: 3087

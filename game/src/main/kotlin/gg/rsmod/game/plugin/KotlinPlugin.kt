@@ -158,8 +158,8 @@ abstract class KotlinPlugin(private val r: PluginRepository, val world: World, v
     /**
      * Spawn a [GroundItem] on the given coordinates.
      */
-    fun spawn_item(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = GroundItem.DEFAULT_RESPAWN_CYCLES) {
-        val ground = GroundItem(item, amount, Tile(x, z, height))
+    fun spawn_item(item: Int, amount: Int, x: Int, z: Int, height: Int = 0, respawnCycles: Int = GroundItem.DEFAULT_RESPAWN_CYCLES, onObject: Boolean = false) {
+        val ground = GroundItem(item, amount, Tile(x, z, height), onObject = onObject)
         ground.respawnCycles = respawnCycles
         r.itemSpawns.add(ground)
     }
